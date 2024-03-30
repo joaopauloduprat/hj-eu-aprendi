@@ -5,9 +5,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.11"
+      integrity="sha384-0gxUXCCR8yv9FM2b+U3FDbsKthCI66oH5IA9fHppQq9DDMHuMauqq1ZHBpJxQ0J0"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
-    Count {{.Count}}
+    {{template "form" .}}
+    <hr />
+    {{template "display" .}}
   </body>
 </html>
+{{end}} {{block "form" .}}
+<form hx-swap="outerHTML" hx-target="#contacts" hx-post="/contacts">
+  name: <input type="text" name="name" /> email:
+  <input type="text" name="email" />
+  <button type="submit">Add contact</button>
+</form>
+{{end}} {{block "display" .}}
+<div id="contacts" style="display: flex; flex-direction: column">
+  {{range .Contacts}}
+  <div>Name: <span>{{.Name}}</span> Email: <span>{{.Email}}</span></div>
+  {{end}}
+</div>
 {{end}}
